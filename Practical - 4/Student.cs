@@ -35,15 +35,13 @@ namespace Practical_4
         /// <returns>decimal</returns>
         public decimal CalculateAverageMarks(decimal[] marks)
         {
-            decimal sum = 0;
-            foreach (decimal mark in marks)
-                sum += mark;
-            return sum / 5;
+
+            return marks.Average();
         }
-        
+
         /// <summary>
         /// Public void method that takes average marks in decimal form and from the switch 
-          ///  case it using pattern matching it will generates the grades.
+        ///  case it using pattern matching it will generates the grades.
         /// </summary>
         /// <param name="marks"></param>
         public void CalculateGrade(decimal marks)
@@ -71,56 +69,42 @@ namespace Practical_4
 
 
         }
-         
+
         /// <summary>
         /// public void aggregate function that takes one decimal and one string value
         ///and it will display the value
         /// </summary>
         /// <param name="Name"></param>
         /// <param name="AverageMarks"></param>
-        public void Aggregate(string Name, decimal AverageMarks)
+        public string Aggregate(string Name, decimal AverageMarks)
         {
-            Console.WriteLine("Student Name : " + Name);
-            Console.WriteLine("Average Marks : " + AverageMarks);
+            return $"Student Name : {Name}\nAverage Marks : {AverageMarks}";
         }
-        
+
         /// <summary>
         /// public void method that takes decimal array as input and returns 
         ///maximum from it.
         /// </summary>
         /// <param name="marks"></param>
-        public void MaxMark(decimal[] marks)
+        public string MaxMark(decimal[] marks)
         {
-            decimal max = decimal.MinValue;
-
-            foreach (decimal mark in marks)
-            {
-                if (mark > max) max = mark;
-            }
-
-            Console.WriteLine("Maximum Mark : " + max);
+            return $"Maximum Marks : {marks.Max()}";
         }
-      
+
         /// <summary>
         /// public void method that takes decimal array as input and returns 
         ///Minimum decimal from it.
         /// </summary>
         /// <param name="marks"></param>
-        public void MinMark(decimal[] marks)
+        public string MinMark(decimal[] marks)
         {
-            decimal min = decimal.MaxValue;
+            return $"minimum Marks : {marks.Min()}";
 
-            foreach (decimal mark in marks)
-            {
-                if (mark < min) min = mark;
-            }
-
-            Console.WriteLine("Minimum Mark : " + min);
         }
 
         public static void Main(string[] args)
         {
-            //Student.AverageMarks= Student.CalculateAverageMarks()
+
             Student student = new Student();
             Console.WriteLine("Enter Student Name !");
 
@@ -128,10 +112,16 @@ namespace Practical_4
 
 
             Console.WriteLine("Enter The Marks in Order : \t1.HTML\t2.CSS\t3.Javascript\t4.JQuery\t5.C# ");
-
-            for (int i = 0; i < 5; i++)
+            try
             {
-                student.Marks[i] = Convert.ToDecimal(Console.ReadLine());
+                for (int i = 0; i < 5; i++)
+                {
+                    decimal.TryParse(Console.ReadLine(), out student.Marks[i]);
+                }
+            }
+            catch(IndexOutOfRangeException Ex)
+            {
+                Console.WriteLine(Ex.Message);
             }
 
             AverageMarks = student.CalculateAverageMarks(student.Marks);
@@ -146,12 +136,12 @@ namespace Practical_4
 
             while (true)
             {
-
-                int option = Convert.ToInt32(Console.ReadLine());
+ 
+                int.TryParse(Console.ReadLine(), out int option);
                 switch (option)
                 {
                     case (int)Student.Options.Aggregate:
-                        student.Aggregate(student.Name, AverageMarks);
+                        Console.WriteLine(student.Aggregate(student.Name, AverageMarks)); 
 
                         break;
                     case (int)Student.Options.Garde:
@@ -159,10 +149,10 @@ namespace Practical_4
                         Console.WriteLine("Grade : " + Student.Grade);
                         break;
                     case (int)Student.Options.MaxMark:
-                        student.MaxMark(student.Marks);
+                        Console.WriteLine(student.MaxMark(student.Marks));
                         break;
                     case (int)Student.Options.MinMark:
-                        student.MinMark(student.Marks);
+                        Console.WriteLine(student.MinMark(student.Marks));
                         break;
                     case (int)Student.Options.Exit:
                         Environment.Exit(0);
